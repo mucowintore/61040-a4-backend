@@ -93,7 +93,7 @@ const operations: Operation[] = [
     fields: { contentId: "input"}
   },
   {
-    name: "Remove upvotes",
+    name: "Remove upvote",
     endpoint: "/api/upvote/:contentId",
     method: "DELETE",
     fields: { contentId: "input"}
