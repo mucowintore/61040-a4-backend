@@ -80,6 +80,42 @@ const operations: Operation[] = [
     method: "DELETE",
     fields: { id: "input" },
   },
+  {
+    name: "Upvote Content",
+    endpoint: "/api/upvote/:contentId",
+    method: "PUT",
+    fields: { contentId: "input"}
+  },
+  {
+    name: "Get upvotes",
+    endpoint: "/api/upvotes/:contentId",
+    method: "GET",
+    fields: { contentId: "input"}
+  },
+  {
+    name: "Remove upvotes",
+    endpoint: "/api/upvote/:contentId",
+    method: "DELETE",
+    fields: { contentId: "input"}
+  },
+  {
+    name: "Add translation",
+    endpoint: "/api/posts/:postId/translation",
+    method: "PUT",
+    fields: { postId: "input", targetLanguage: "input", translatedString: "input"},
+  },
+  {
+    name: "Get translations",
+    endpoint: "/api/posts/:postId/translations",
+    method: "GET",
+    fields: {postId: "input"}
+  },
+  {
+    name: "Delete translation",
+    endpoint: "/api/posts/:postId/translation/:translationId",
+    method: "DELETE",
+    fields: {translationId: "input"}
+  }
   //
   // ...
   //

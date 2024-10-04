@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 
-import { Router, getExpressRouter } from "./framework/router";
+import { getExpressRouter, Router } from "./framework/router";
 
-import { Authing, Friending, Posting, Sessioning } from "./app";
+import { Authing, Friending, Posting, Sessioning, Translating, Upvoting } from "./app";
 import { PostOptions } from "./concepts/posting";
 import { SessionDoc } from "./concepts/sessioning";
 import Responses from "./responses";
@@ -152,6 +152,73 @@ class Routes {
     const fromOid = (await Authing.getUserByUsername(from))._id;
     return await Friending.rejectRequest(fromOid, user);
   }
+
+  
+  @Router.put("/upvote/:contentId")
+  async upvoteContent(session: SessionDoc, contentId: string) {
+    const user = Sessioning.getUser(session)
+    return await Upvoting.upvoteContent(user, new ObjectId(contentId))
+  }
+
+  @Router.get("/upvotes/:contentId")
+  async getUpvotes(contentId: string) {
+    return await Upvoting.getUpvotes(new ObjectId(contentId))
+  }
+
+  @Router.delete("/upvote/:contentId")
+  async removeUpvote(session: SessionDoc, contentId: string) {
+    const user = Sessioning.getUser(session)
+    return await Upvoting.removeUpvote(user, new ObjectId(contentId))
+  }  
+
+  @Router.get("/posts/:postId/translations")
+  async getTranslations(postId: string) {
+    return await Translating.getTranslations(new ObjectId(postId))
+  }
+
+  @Router.put("/posts/:postId/translation")
+  async addTranslation(session: SessionDoc, postId: string, targetLanguage: string, translatedString: string) {
+    const user = Sessioning.getUser(session)
+    return await Translating.addTranslation(
+      user,
+      new ObjectId(postId),
+      targetLanguage,
+      translatedString)
+  }
+
+  @Router.delete("/posts/:postId/translation/:translationId")
+  async deleteTranslation(session: SessionDoc, translationId: string) {
+    const userId = Sessioning.getUser(session)
+    return await Translating.deleteTranslation(userId, new ObjectId(translationId))
+  }
+
+  @Router.get("/posts/:postId/explanations")
+  async getExplanations(postId: String){}
+
+  @Router.put("/posts/:postId/explanation")
+  async addExplanation(session: SessionDoc, postId: string, entry: string, definition: string, example?: string){}
+
+  @Router.delete("posts/:postId/explanations/:explanationId")
+  async deleteExplanation(session: SessionDoc, explanationId: string){}
+
+  @Router.get("/posts/:postId/transcriptions")
+  async getTranscriptions(postId: String){}
+
+  @Router.put("/posts/:postId/transcription")
+  async addTranscription(session: SessionDoc, postId: string, transcript: string){}
+
+  @Router.delete("posts/:postId/transcriptions/:transcriptionId")
+  async deleteTranscription(session: SessionDoc, transcriptionId: string){}
+
+  @Router.get("/posts/:postId/recordings")
+  async getRecordings(postId: String){}
+
+  @Router.put("/posts/:postId/recording")
+  async addRecording(session: SessionDoc, postId: string, audioUrl: string){}
+
+  @Router.delete("posts/:postId/recordings/:recordingId")
+  async deleteRecording(session: SessionDoc, recordingId: string){}
+
 }
 
 /** The web app. */
