@@ -66,19 +66,91 @@ const operations: Operation[] = [
     name: "Create Post",
     endpoint: "/api/posts",
     method: "POST",
-    fields: { content: "input" },
+    fields: { mediaType: "input", content: "input" },
   },
-  {
-    name: "Update Post",
-    endpoint: "/api/posts/:id",
-    method: "PATCH",
-    fields: { id: "input", content: "input", options: { backgroundColor: "input" } },
-  },
+  // {
+  //   name: "Update Post",
+  //   endpoint: "/api/posts/:id",
+  //   method: "PATCH",
+  //   fields: { id: "input", content: "input", options: { backgroundColor: "input" } },
+  // },
   {
     name: "Delete Post",
     endpoint: "/api/posts/:id",
     method: "DELETE",
     fields: { id: "input" },
+  },
+  {
+    name: "Add translation",
+    endpoint: "/api/posts/:postId/translation",
+    method: "PUT",
+    fields: { postId: "input", targetLanguage: "input", translatedString: "input"},
+  },
+  {
+    name: "Get translations",
+    endpoint: "/api/posts/:postId/translations",
+    method: "GET",
+    fields: {postId: "input"}
+  },
+  {
+    name: "Delete translation",
+    endpoint: "/api/translations/:translationId",
+    method: "DELETE",
+    fields: {translationId: "input"}
+  },
+  {
+    name: "Add transcription",
+    endpoint: "/api/posts/:postId/transcription",
+    method: "PUT",
+    fields: { postId: "input", transcript: "input"},
+  },
+  {
+    name: "Get transcriptions",
+    endpoint: "/api/posts/:postId/transcriptions",
+    method: "GET",
+    fields: {postId: "input"}
+  },
+  {
+    name: "Delete transcription",
+    endpoint: "/api/transcriptions/:transcriptionId",
+    method: "DELETE",
+    fields: {transcriptionId: "input"}
+  },
+  {
+    name: "Add recording",
+    endpoint: "/api/posts/:postId/recording",
+    method: "PUT",
+    fields: { postId: "input", audioUrl: "input"},
+  },
+  {
+    name: "Get recordings",
+    endpoint: "/api/posts/:postId/recordings",
+    method: "GET",
+    fields: {postId: "input"}
+  },
+  {
+    name: "Delete recording",
+    endpoint: "/api/recordings/:recordingId",
+    method: "DELETE",
+    fields: {recordingId: "input"}
+  },
+  {
+    name: "Add explanation",
+    endpoint: "/api/posts/:postId/explanation",
+    method: "PUT",
+    fields: { postId: "input", entry: "input", definition: "input", example: "input"},
+  },
+  {
+    name: "Get explanations",
+    endpoint: "/api/posts/:postId/explanations",
+    method: "GET",
+    fields: {postId: "input"}
+  },
+  {
+    name: "Delete explanation",
+    endpoint: "/api/explanations/:explanationId",
+    method: "DELETE",
+    fields: {explanationId: "input"}
   },
   {
     name: "Upvote Content",
@@ -98,24 +170,6 @@ const operations: Operation[] = [
     method: "DELETE",
     fields: { contentId: "input"}
   },
-  {
-    name: "Add translation",
-    endpoint: "/api/posts/:postId/translation",
-    method: "PUT",
-    fields: { postId: "input", targetLanguage: "input", translatedString: "input"},
-  },
-  {
-    name: "Get translations",
-    endpoint: "/api/posts/:postId/translations",
-    method: "GET",
-    fields: {postId: "input"}
-  },
-  {
-    name: "Delete translation",
-    endpoint: "/api/posts/:postId/translation/:translationId",
-    method: "DELETE",
-    fields: {translationId: "input"}
-  }
   //
   // ...
   //

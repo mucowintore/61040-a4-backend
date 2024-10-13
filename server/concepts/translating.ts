@@ -21,7 +21,7 @@ export default class TranslatingConcept {
     }
 
     async addTranslation(user: ObjectId, postId: ObjectId, targetLanguage: string, translatedString: string) {
-        await this.canTranslate(user, postId, targetLanguage)
+        await this.assertUserCanTranslate(user, postId, targetLanguage)
         const _id = await this.translations.createOne({
             translatedBy: user,
             translatedString,
@@ -32,6 +32,13 @@ export default class TranslatingConcept {
         return {
             "msg": "Translation successfully added!",
             translation: await this.translations.readOne({ _id })
+        }
+    }
+
+    async getPostTranslations(postId: ObjectId) {
+        const result = await this.translations.readMany({ postId })
+        return {
+            translations: result
         }
     }
 
@@ -46,15 +53,15 @@ export default class TranslatingConcept {
         }
     }
 
-
-    async getTranslations(postId: ObjectId) {
-        const result = await this.translations.readMany({postId})
-        return {
-            translations: result
-        }
+    async deletePostTranslations(postId: ObjectId) {
+        const result = this.translations.deleteMany({ postId })
+        console.log(JSON.stringify(result, null, 2))
+        return result
     }
 
-    private async canTranslate(user: ObjectId, postId: ObjectId, targetLanguage: string) {
+    
+
+    private async assertUserCanTranslate(user: ObjectId, postId: ObjectId, targetLanguage: string) {
         const translation = await this.translations.readOne({
             $and: [
                 { translatedBy: user },
@@ -76,8 +83,12 @@ export default class TranslatingConcept {
     }
     private async assertIsTranslationAuthor(userId: ObjectId, translationId: ObjectId) {
         const translation = await this.translations.readOne(translationId)
-        if(translation?.translatedBy !== userId) {
-
+        if(!translation) {
+            throw new TranslationNotFoundError(translationId)
+        }
+        
+        if(translation.translatedBy.toString() !== userId.toString()) {
+            throw new UserNotTranslationAuthorError(userId, translationId)
         }
     }
 }

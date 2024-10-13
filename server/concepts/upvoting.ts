@@ -7,7 +7,6 @@ export interface UpvoteDoc extends BaseDoc {
     user: ObjectId,
     content: ObjectId
 }
-
 /**
  * concept: Upvoting [User, Content]
  */
@@ -24,7 +23,7 @@ export default class UpvotingConcept {
         return { msg: "Upvote successfully added!", upvote: await this.upvotes.readOne({ _id })}
     }
 
-    async removeUpvote(user: ObjectId, content: ObjectId) {
+    async deleteUpvote(user: ObjectId, content: ObjectId) {
         const upvote = await this.upvotes.popOne({user, content})
         if(upvote === null) {
             throw new UpvoteNotFoundError(user, content)
@@ -34,6 +33,10 @@ export default class UpvotingConcept {
             "msg": "Upvote successfully deleted",
             upvote
         }
+    }
+
+    async deleteItemUpvotes(itemId: ObjectId) {
+        await this.upvotes.deleteMany({ content: itemId })
     }
 
     async getUpvotes(content: ObjectId) {
